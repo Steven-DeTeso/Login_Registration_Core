@@ -1,0 +1,17 @@
+/* all css */
+
+* {
+    margin: 0px;
+    padding: 0px
+}
+
+.container{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.register .login{
+    width: 300px;
+    display: inline-flex;
+    justify-content: space-between;
+}
