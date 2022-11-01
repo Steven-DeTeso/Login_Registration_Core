@@ -34,6 +34,9 @@ class User:
         if len(form_data.get('password')) <= 8:
             flash("Your password isn't long enough! It has to be at least 8 characters!")
             is_valid = False
+        if form_data.get('password') != form_data.get('confirm_password'):
+            flash('Passwords must match!')
+            is_valid = False
         return is_valid
 
     @classmethod
