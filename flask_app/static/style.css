@@ -10,8 +10,34 @@
     justify-content: space-evenly;
 }
 
-.register .login{
-    width: 300px;
-    display: inline-flex;
+.register, .login{
     justify-content: space-between;
+    background-color: lightskyblue;
+    padding: 20px;
+    border: solid 2px black;
+    border-radius: 5%;
+}
+
+button{
+    margin-top: 15px;
+}
+
+h1{
+    color: #0d6efd;
+}
+
+h2{
+    font-size: calc(1.375rem + 1.5vw);
+    color: #198754;
+}
+
+
+li{
+    margin-bottom: 5px;
+}
+
+.error{
+    text-decoration: none;
+    color: red;
+    background-color: white;
 }

@@ -1,5 +1,6 @@
+from pickle import FALSE
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask import flash 
+from flask import flash
 import re
 # classes and interacting with the database 
 
@@ -12,30 +13,34 @@ class User:
         self.last_name = data['last_name']
         self.email = data['email']
         self.password = data['password']
-        self.confirm_password = data ['confirm_password']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
     @staticmethod
     def validate_user_register(form_data:dict[str, str]) -> bool:
         is_valid = True
-        if len(form_data.get('first_name')) <= 3:
-            flash("First name has to be longer or not left blank!")
+        query = "SELECT * FROM users WHERE email = %(email)s;"
+        result = connectToMySQL('login_registration_schema').query_db(query, form_data)
+        if len(result) >= 1:
+            flash("Email is already registered in system!", 'register')
             is_valid = False
-        if len(form_data.get('last_name')) <= 3:
-            flash("Last name has to be longer or not left blank!")
+        if len(form_data.get('first_name')) < 3:
+            flash("First name has to be longer or not left blank!", 'register')
+            is_valid = False
+        if len(form_data.get('last_name')) < 3:
+            flash("Last name has to be longer or not left blank!", 'register')
             is_valid = False
         if len(form_data.get('email')) <= 0:
-            flash("Valid email is required!")
+            flash("Valid email is required!", 'register')
             is_valid = False
         if not EMAIL_REGEX.match(form_data.get('email')):
-            flash("Email is in the wrong format!")
+            flash("Email is in the wrong format!", 'register')
             is_valid = False
-        if len(form_data.get('password')) <= 8:
-            flash("Your password isn't long enough! It has to be at least 8 characters!")
+        if len(form_data.get('password')) < 8:
+            flash("Your password isn't long enough! It has to be at least 8 characters!", 'register')
             is_valid = False
         if form_data.get('password') != form_data.get('confirm_password'):
-            flash('Passwords must match!')
+            flash('Passwords must match!', 'register')
             is_valid = False
         return is_valid
 
@@ -47,3 +52,22 @@ class User:
         VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(), NOW());
         """
         return connectToMySQL('login_registration_schema').query_db(query, data)
+    
+    @classmethod
+    def get_user_by_email(cls, data:dict):
+        query = """SELECT * 
+        FROM users 
+        WHERE email = %(email)s;"""
+        result = connectToMySQL('login_registration_schema').query_db(query, data)
+        if len(result) < 1: 
+            return False
+        return cls(result[0])
+
+    @classmethod 
+    def get_user_by_id(cls, data):
+        query = """ SELECT * 
+        FROM users 
+        WHERE id = %(id)s
+        """
+        result = connectToMySQL('login_registration_schema').query_db(query, data)
+        return cls(result[0])
