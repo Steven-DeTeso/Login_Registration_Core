@@ -1,3 +1,4 @@
+import re
 from flask_app import app, bcrypt
 from flask_app.models.user import User
 from flask import render_template, request, redirect # etc
@@ -19,6 +20,7 @@ def f_register_user():
         User.save(data)
         return redirect('/register/success')
     return redirect('/')
+
 
 @app.route('/register/success')
 def r_success():
