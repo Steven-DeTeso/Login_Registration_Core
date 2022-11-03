@@ -12,7 +12,7 @@
 
 .register, .login{
     justify-content: space-between;
-    background-color: lightskyblue;
+    /* background-color: lightskyblue; */
     padding: 20px;
     border: solid 2px black;
     border-radius: 5%;
@@ -31,13 +31,19 @@ h2{
     color: #198754;
 }
 
+ul{
+    list-style: none;
+
+}
 
 li{
     margin-bottom: 5px;
+    margin-left: -25px;
 }
 
 .error{
-    text-decoration: none;
-    color: red;
-    background-color: white;
+    color: rgb(223, 23, 23);
+    text-shadow: #000 0px 0px 1px,#000 0px 0px 1px, #000 0px 0px 1px,
+    #000 0px 0px 1px;
+    font-size: larger;
 }

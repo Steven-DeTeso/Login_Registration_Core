@@ -9,7 +9,6 @@ def r_home_page():
 
 @app.route('/register/user', methods=['POST'])
 def f_register_user():
-    print(request.form)
     if User.validate_user_register(request.form):
         data = {
         'first_name': request.form.get('first_name'),
