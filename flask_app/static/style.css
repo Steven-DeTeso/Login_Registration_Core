@@ -10,9 +10,15 @@
     justify-content: space-evenly;
 }
 
+.container-fluid{
+    background-color: lightblue;
+    height: 1000px;
+}
+
 .register, .login{
+    margin-top: 30px;
     justify-content: space-between;
-    /* background-color: lightskyblue; */
+    background-color: white;
     padding: 20px;
     border: solid 2px black;
     border-radius: 5%;

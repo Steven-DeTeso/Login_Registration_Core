@@ -16,7 +16,7 @@ def f_register_user():
         'email': request.form.get('email'),
         'password': bcrypt.generate_password_hash(request.form.get('password'))
         }
-        User.save(data)
+        session['user_id'] = User.save(data)
         return redirect('/login/success')
     return redirect('/')
 

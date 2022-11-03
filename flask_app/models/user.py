@@ -1,4 +1,3 @@
-from pickle import FALSE
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 import re
@@ -41,6 +40,9 @@ class User:
             is_valid = False
         if form_data.get('password') != form_data.get('confirm_password'):
             flash('Passwords must match!', 'register')
+            is_valid = False
+        if form_data.get('radio') != 'verified':
+            flash('Please verify you are not a robot!', 'register')
             is_valid = False
         return is_valid
 
