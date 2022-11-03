@@ -18,22 +18,22 @@ class User:
     @staticmethod
     def validate_user_register(form_data:dict[str, str]) -> bool:
         is_valid = True
+        if len(form_data.get('first_name')) < 3:
+            flash("First name has to be longer and/or not blank!", 'register')
+            is_valid = False
+        if len(form_data.get('last_name')) < 3:
+            flash("Last name has to be longer and/or not blank!", 'register')
+            is_valid = False
+        if len(form_data.get('email')) <= 0:
+            flash("A valid email is required!", 'register')
+            is_valid = False
+        if not EMAIL_REGEX.match(form_data.get('email')):
+            flash("The email you entered is in the wrong format!  ----------- Use this example format ----------- <email-name>@<service>.<something>", 'register')
+            is_valid = False
         query = "SELECT * FROM users WHERE email = %(email)s;"
         result = connectToMySQL('login_registration_schema').query_db(query, form_data)
         if len(result) >= 1:
             flash("Email is already registered in system!", 'register')
-            is_valid = False
-        if len(form_data.get('first_name')) < 3:
-            flash("First name has to be longer or not left blank!", 'register')
-            is_valid = False
-        if len(form_data.get('last_name')) < 3:
-            flash("Last name has to be longer or not left blank!", 'register')
-            is_valid = False
-        if len(form_data.get('email')) <= 0:
-            flash("Valid email is required!", 'register')
-            is_valid = False
-        if not EMAIL_REGEX.match(form_data.get('email')):
-            flash("Email is in the wrong format!", 'register')
             is_valid = False
         if len(form_data.get('password')) < 8:
             flash("Your password isn't long enough! It has to be at least 8 characters!", 'register')
@@ -42,7 +42,7 @@ class User:
             flash('Passwords must match!', 'register')
             is_valid = False
         if form_data.get('radio') != 'verified':
-            flash('Please verify you are not a robot!', 'register')
+            flash('Please verify you are NOT a robot!', 'register')
             is_valid = False
         return is_valid
 

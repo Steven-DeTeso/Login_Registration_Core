@@ -37,6 +37,10 @@ h2{
     color: #198754;
 }
 
+h1, h2{
+    text-align: center;
+}
+
 ul{
     list-style: none;
 
@@ -45,11 +49,18 @@ ul{
 li{
     margin-bottom: 5px;
     margin-left: -25px;
+    border-radius: 20%;
+    text-align: center;
 }
 
 .error{
-    color: rgb(223, 23, 23);
-    text-shadow: #000 0px 0px 1px,#000 0px 0px 1px, #000 0px 0px 1px,
-    #000 0px 0px 1px;
     font-size: larger;
+    font-weight: bold;
+    background-color: #f7d6d9;
+}
+
+span{
+    font-size: large;
+    font-weight: bold;
+    color: rgb(255, 0, 0)
 }
