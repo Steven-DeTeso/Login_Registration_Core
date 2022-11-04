@@ -1,7 +1,6 @@
-import re
 from flask_app import app, bcrypt
 from flask_app.models.user import User
-from flask import render_template, request, redirect, session, flash # etc
+from flask import render_template, request, redirect, session
 
 @app.route('/')
 def r_home_page():
@@ -16,31 +15,28 @@ def f_register_user():
         'email': request.form.get('email'),
         'password': bcrypt.generate_password_hash(request.form.get('password'))
         }
-        session['user_id'] = User.save(data)
+        User.save(data)
+        user_in_db = User.get_one_for_login(data)
+        session['user_id'] = user_in_db[0]
         return redirect('/login/success')
     return redirect('/')
 
 @app.route('/login/user', methods=['POST'])
 def f_login_user():
-    data = {'email': request.form.get('email')}
-    user_in_db = User.get_user_by_email(data)
-    if not user_in_db:
-        flash('Invalid Email entereted', 'login')
+    if not User.validate_user_login(request.form):
         return redirect('/')
-    if not bcrypt.check_password_hash(user_in_db.password, request.form.get('password')):
-        flash('Invalid Password entered', 'login')
-        return redirect('/')
-    session['user_id'] = user_in_db.id # comes back as object so we use dot notation to access fields
+    data = {
+        'email': request.form.get('email')
+    }
+    user_in_db = User.get_one_for_login(data)
+    session['user_id'] = user_in_db[0]
     return redirect('/login/success')
 
 @app.route('/login/success')
 def r_success():
     if 'user_id' not in session:
         return redirect('/log_out')
-    data = {
-        'id': session['user_id']
-    }
-    return render_template('success.html', user = User.get_user_by_id(data))
+    return render_template('success.html', user = session['user_id'])
 
 @app.route('/log_out')
 def rd_log_out():
